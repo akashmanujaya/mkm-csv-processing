@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aml-mkm-csv-processing
+    container_name: aml-mkm-csv-processing
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    volumes:
+      - ./:/var/www
+      - /var/www/vendor
+      - /var/www/node_modules
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: aml_mkm
+      DB_USERNAME: user
+      DB_PASSWORD: password
+    networks:
+      - laravel
+    command: >
+       /bin/sh -c "/wait-for-db.sh db &&
+              /start.sh &&
+              composer install &&
+              cp .env.example .env &&
+              npm install &&
+              npm run build &&
+              php artisan key:generate &&
+              php artisan migrate --seed &&
+              php artisan serve --host=0.0.0.0 --port=8000"
+
+  db:
+    image: mysql:8.0
+    container_name: aml_mysql_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: aml_mkm
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  laravel:
+    driver: bridge
+
