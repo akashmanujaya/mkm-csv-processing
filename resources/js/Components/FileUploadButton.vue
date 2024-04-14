@@ -28,14 +28,27 @@
         </button>
       </div>
     </div>
+    <div class="flex justify-center items-center mt-10">
+      <!-- Message boxes below the upload button container -->
+      <div v-if="errorMessage" class="mt-3 p-3 bg-red-100 text-red-700 rounded-lg px-10">
+        {{ errorMessage }}
+      </div>
+      <div v-if="successMessage" class="mt-3 p-3 bg-green-100 text-green-700 rounded-lg px-10">
+        {{ successMessage }}
+      </div>
+    </div>
   </template>
   
   
-  <script>
+<script>
+  import axios from 'axios';
+    
   export default {
     data() {
       return {
         isUploading: false,
+        errorMessage: '',
+        successMessage: ''
       };
     },
     methods: {
@@ -44,15 +57,39 @@
         if (!file) {
           return;
         }
-        
+
         this.isUploading = true;
-        // Simulate file upload with a timeout
-        setTimeout(() => {
+        this.errorMessage = ''; // Reset error message at the beginning of the upload
+        this.successMessage = ''; // Reset success message at the beginning of the upload
+
+        let formData = new FormData();
+        formData.append('csv_file', file);
+
+        axios.post('/upload-csv', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(response => {
+          this.successMessage = response.data.message || 'File uploaded successfully!';
+          this.clearMessages();
+        })
+        .catch(error => {
+          this.errorMessage = error.response.data.message || 'An error occurred during file upload.';
+          this.clearMessages();
+        })
+        .finally(() => {
           this.isUploading = false;
-          // Reset the input after processing
-          this.$refs.fileInput.value = '';
-        }, 2000); // 2 seconds delay to mimic file processing
+          this.$refs.fileInput.value = ''; // Reset the input after processing
+        });
       },
+      clearMessages() {
+        // setTimeout(() => {
+        //   this.errorMessage = '';
+        //   this.successMessage = '';
+        // }, 3000); // Clear messages after 3 seconds
+      }
+
     },
   };
   </script>
@@ -61,5 +98,5 @@
   button:disabled {
     cursor: not-allowed;
   }
-  </style>
+</style>
   
