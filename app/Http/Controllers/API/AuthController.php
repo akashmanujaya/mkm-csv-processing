@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -27,7 +28,7 @@ class AuthController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(['token' => $token]);
+        return ApiResponse::send(['token' => $token], 'Registration successful.');
     }
 
     // Login
@@ -39,13 +40,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['token' => $token]);
+        return ApiResponse::send(['token' => $token], 'Login successful.');
     }
 
     // Get user info
     public function me()
     {
-        return response()->json(auth()->user());
+        return ApiResponse::send(['user' => auth()->user()], 'Data retrived successful.');
     }
 }
 
