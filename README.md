@@ -1,66 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# MKM CSV Processing System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+This project is designed to demonstrate a robust data processing system using Laravel 10, which handles CSV file uploads and data manipulation securely and efficiently. It includes JWT authentication for API access, a console command to upload files and a simple Vue.js frontend for uploading files, and utilizes Docker for easy setup and deployment.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technologies Used
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Docker Environment**: Simplifies the setup and deployment by containerizing the application and its environment.
+- **Queue Service with Supervisor**: Manages job queues to process tasks asynchronously, ensuring application responsiveness.
+- **Redis Queue Management**: Uses Redis for queue management to handle background jobs efficiently.
+- **JWT Auth**: Secures API endpoints using JSON Web Tokens, ensuring that only authenticated users can access certain operations.
+- **spatie/simple-excel**: Utilized for efficient reading and writing of large CSV files in chunks, optimizing memory usage and processing speed.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Project Requirements
 
-## Learning Laravel
+- Composer >= 2.6.6
+- PHP >= 8.2
+- Node >= 20.11.0
+- Npm >= 10.2.4
+- Laravel >= 10.10
+- Redis (Latest Version)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation Steps Using Docker
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Clone the repo**: `git clone https://github.com/akashmanujaya/mkm-csv-processing.git`
+2. **Navigate to the Project Directory**: `cd mkm-csv-processing`
+3. **Build and Start Docker Containers**: `docker-compose up -d --build`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    After running this command, your containers will be built. Please wait a few seconds until the container runs all the commands inside the terminal. Check your container terminal for logs. After successful installation of all packages, the application will be available at http://0.0.0.0:8000.
 
-## Laravel Sponsors
+4. **Access the Application**: Open your web browser and visit http://0.0.0.0:8000.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Installation Steps Without Docker
 
-### Premium Partners
+1. **Clone the Repository**
+2. **Navigate to the Project Directory**
+3. **Install Composer Dependencies**: `composer install`
+4. **Install NPM Packages**: `npm install`
+5. **Set Up Environment**
+    - **Copy the example environment file**: `cp .env.example .env`
+    - **Generate an application key**: `php artisan key:generate`
+    - **Generate the JWT Secret key**: `php artisan jwt:secret`
+6. **Build Assets**: `npm run dev`
+7. **Initialize Redis in your local environment**
+8. **Serve the Application**: `php artisan serve`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   Then, access the application at http://127.0.0.1:8000/.
 
-## Contributing
+9. **Run the Queue Worker**: To process jobs on your queue, you need to start a queue worker. For development, you can start a worker with `php artisan queue:work`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Why Very Simple UI?
 
-## Code of Conduct
+The simple UI demonstrates experience in Vue.js, JavaScript, CSS, and Tailwind CSS, focusing on functionality over design for this project scope.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## PHP Console Command
 
-## Security Vulnerabilities
+To use the implemented console command to process CSV files directly via command line:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Ensure the CSV file is within the Docker container at `var/www` (as Docker uses a virtual machine and cannot directly access your PC environment). 
+- Example command: `php artisan csv:process {path_to_csv_file_inside_container}`
 
-## License
+Or if you are using non docker env:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- run the `php artisan csv:process {path_to_csv_file_in_your_local_env}` cosole command.
+
+## Application Program Interface (API)
+
+To run and test the API functionalities, use Postman, a popular tool for API testing. Follow these steps to set up and execute the API calls:
+
+1. **Import the Postman Collection and Environment**:
+    - Navigate to the 'API' folder located in the project root.
+    - Import the `AML_MKM.postman_collection.json` into Postman, which contains all the API requests you need to interact with the application.
+    - Depending on your setup, import either the `AML_MKM Docker.postman_environment.json` or `AML_MKM Localhost.postman_environment.json` into Postman. These environment files configure Postman to point to the correct base URL and manage environmental variables.
+
+2. **Authentication**:
+    - Under the **Auth** folder in Postman, you will find the registration and login APIs.
+    - **Register**: If you do not have an account, use the registration request to create one. Fill in the required details such as name, email, and password.
+    - **Login**: If you already have an account, use the login request to authenticate. Upon successful authentication, the API will return a JWT (JSON Web Token), which Postman is configured to automatically save to an environment variable called `Token`.
+
+3. **Using the Token**:
+    - This token is essential for making requests that require authentication. The Postman environment is set up to use this token automatically for all requests that need it, so you don't have to manually insert the token for each request.
+    - Ensure that the `Token` variable in your selected Postman environment is updated with the token received from the login response. This setup allows seamless transition between logging in and using secured routes.
+
+4. **Accessing Secured Endpoints**:
+    - Navigate to the **CSV** folder within the Postman collection.
+    - **Upload CSV**: Use this request to upload a CSV file. The API expects a file upload as part of the request and uses the token for authentication.
+    - **Get Product by SKU**: After uploading data, you can use this request to retrieve details of a product by its SKU. This request also requires the JWT for authentication.
+
+5. **Testing**:
+    - Execute the requests in the order of registration (if needed), login, CSV upload, and getting product data.
+    - Monitor the responses in Postman to ensure each step is successful. Check for HTTP status codes and response messages to diagnose any issues.
+
+6. **Environment Setup**:
+    - Make sure the environment in Postman correctly points to your local or Docker-based application instance.
+    - Double-check that the base URL in the Postman environment settings matches your running application’s URL (either `http://0.0.0.0:8000` for Docker or `http://127.0.0.1:8000` for a local setup).
+
+
+## Running Tests
+
+### Using Docker Environment
+
+1. **Access the Container's Shell**: `docker exec -it aml-mkm-csv-processing /bin/bash                  `
+2. **Run the Tests**: `php artisan test`
+
+### In Non-Docker Environment
+
+Simply run the tests with the following command in your project root:
+
+```bash
+php artisan test
+```
