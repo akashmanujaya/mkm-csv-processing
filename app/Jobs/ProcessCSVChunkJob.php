@@ -48,7 +48,7 @@ class ProcessCSVChunkJob implements ShouldQueue
     {
         try {
             foreach ($this->rows as $row) {
-                Log::info('Processing row: ' . json_encode($row));
+                Log::info('Processing row: ' . json_encode($row['sku']));
 
                 Product::updateOrCreate(
                     ['sku' => $row['sku']],

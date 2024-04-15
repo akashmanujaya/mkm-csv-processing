@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +12,8 @@ use function PHPUnit\Framework\fileExists;
 
 class ProcessCSVCommandTest extends TestCase
 {
+    use RefreshDatabase;
+    
     public function test_process_csv_command_with_existing_file()
     {
         $sampleFilePath = base_path('tests/sample_files/sample.csv');  // Ensure this file exists for testing

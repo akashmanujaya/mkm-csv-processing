@@ -39,17 +39,19 @@ This project is designed to demonstrate a robust data processing system using La
 4. **Install NPM Packages**: `npm install`
 5. **Set Up Environment**
     - **Copy the example environment file**: `cp .env.example .env`
+    - **Check the .env file and update the database credential and other realted data such as redis host**
     - **Generate an application key**: `php artisan key:generate`
     - **Generate the JWT Secret key**: `php artisan jwt:secret`
-6. **Build Assets**: `npm run dev`
+6. **Build Assets**: `npm run build`
 7. **Initialize Redis in your local environment**
+8. **Run the database migraiton**: `php artisan migrate`
 8. **Serve the Application**: `php artisan serve`
 
    Then, access the application at http://127.0.0.1:8000/.
 
 9. **Run the Queue Worker**: To process jobs on your queue, you need to start a queue worker. For development, you can start a worker with `php artisan queue:work`.
 
-## Why Very Simple UI?
+## Why Very Simple UI even its not required?
 
 The simple UI demonstrates experience in Vue.js, JavaScript, CSS, and Tailwind CSS, focusing on functionality over design for this project scope.
 
