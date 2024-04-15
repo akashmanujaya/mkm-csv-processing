@@ -32,7 +32,7 @@ class CSVController extends Controller
         }
 
         return response()->json([
-            'message' => 'Your data is being processed 222.',
+            'message' => 'Your data is being processed.',
         ]);
     }
 }

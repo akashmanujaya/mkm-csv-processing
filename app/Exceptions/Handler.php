@@ -46,12 +46,9 @@ class Handler extends ExceptionHandler
                 return ApiResponse::error('Token error', 401);
             } elseif ($exception instanceof AuthenticationException) {
                 return ApiResponse::error('Authentication error', 401);
+            } elseif ($exception instanceof ValidationException) {
+                return ApiResponse::error('Validation Error', 422, $exception->errors());
             }
-        }
-
-        // Handle validation exceptions
-        if ($exception instanceof ValidationException) {
-            return ApiResponse::error('Validation Error', 422, $exception->errors());
         }
 
         return parent::render($request, $exception);

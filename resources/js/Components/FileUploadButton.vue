@@ -84,10 +84,10 @@
         });
       },
       clearMessages() {
-        // setTimeout(() => {
-        //   this.errorMessage = '';
-        //   this.successMessage = '';
-        // }, 3000); // Clear messages after 3 seconds
+        setTimeout(() => {
+          this.errorMessage = '';
+          this.successMessage = '';
+        }, 3000); // Clear messages after 3 seconds
       }
 
     },
